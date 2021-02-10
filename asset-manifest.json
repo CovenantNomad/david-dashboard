@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.js": "/david-dashboard/static/js/main.6f0df02d.chunk.js",
-    "main.js.map": "/david-dashboard/static/js/main.6f0df02d.chunk.js.map",
+    "main.js": "/david-dashboard/static/js/main.deddbe22.chunk.js",
+    "main.js.map": "/david-dashboard/static/js/main.deddbe22.chunk.js.map",
     "runtime-main.js": "/david-dashboard/static/js/runtime-main.7596247e.js",
     "runtime-main.js.map": "/david-dashboard/static/js/runtime-main.7596247e.js.map",
     "static/css/2.121b3ca3.chunk.css": "/david-dashboard/static/css/2.121b3ca3.chunk.css",
-    "static/js/2.a7bbd7d4.chunk.js": "/david-dashboard/static/js/2.a7bbd7d4.chunk.js",
-    "static/js/2.a7bbd7d4.chunk.js.map": "/david-dashboard/static/js/2.a7bbd7d4.chunk.js.map",
+    "static/js/2.3a1191d3.chunk.js": "/david-dashboard/static/js/2.3a1191d3.chunk.js",
+    "static/js/2.3a1191d3.chunk.js.map": "/david-dashboard/static/js/2.3a1191d3.chunk.js.map",
     "index.html": "/david-dashboard/index.html",
     "static/css/2.121b3ca3.chunk.css.map": "/david-dashboard/static/css/2.121b3ca3.chunk.css.map",
-    "static/js/2.a7bbd7d4.chunk.js.LICENSE.txt": "/david-dashboard/static/js/2.a7bbd7d4.chunk.js.LICENSE.txt",
+    "static/js/2.3a1191d3.chunk.js.LICENSE.txt": "/david-dashboard/static/js/2.3a1191d3.chunk.js.LICENSE.txt",
     "static/media/sidebar-4.dd4b5581.jpg": "/david-dashboard/static/media/sidebar-4.dd4b5581.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.7596247e.js",
     "static/css/2.121b3ca3.chunk.css",
-    "static/js/2.a7bbd7d4.chunk.js",
-    "static/js/main.6f0df02d.chunk.js"
+    "static/js/2.3a1191d3.chunk.js",
+    "static/js/main.deddbe22.chunk.js"
   ]
 }
