@@ -1,14 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
-
-import GridItem from "../../components/Grid/GridItem";
-import GridContainer from "../../components/Grid/GridContainer";
-// import Table from "../../components/Table/Table";
-import Card from "../../components/Card/Card.js";
-import CardHeader from "../../components/Card/CardHeader.js";
-import CardBody from "../../components/Card/CardBody.js";
+import { db } from '../../config/firebaseConfig'
+// @material-ui/core
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -25,32 +20,17 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+// core components
+import GridItem from "../../components/Grid/GridItem";
+import GridContainer from "../../components/Grid/GridContainer";
+// import Table from "../../components/Table/Table";
+import Card from "../../components/Card/Card.js";
+import CardHeader from "../../components/Card/CardHeader.js";
+import CardBody from "../../components/Card/CardBody.js";
+// @material-ui/icons
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-
-const styles = {
-
-};
-
-function createData(name, grade, phoneNumber, birthday, sex) {
-  return { name, grade, phoneNumber, birthday, sex };
-}
-
-const rows = [
-  createData('아브라함', '고등학교3학년', '010-1234-5678', '2003-01-01', '남자'),
-  createData('사라', '고등학교3학년', '010-1234-5678', '2003-07-01', '여자'),
-  createData('하갈', '고등학교3학년', '010-1234-5678', '2003-08-01', '여자'),
-  createData('이삭', '고등학교2학년', '010-1234-5678', '2004-01-01', '남자'),
-  createData('리브가', '고등학교2학년', '010-1234-5678', '2004-06-01', '여자'),
-  createData('야곱', '고등학교1학년', '010-1234-5678', '2005-01-01', '남자'),
-  createData('라헬', '고등학교1학년', '010-1234-5678', '2005-01-01', '여자'),
-  createData('레아', '고등학교1학년', '010-1234-5678', '2005-01-01', '여자'),
-  createData('르우벤', '중학교3학년', '010-1234-5678', '2006-01-01', '남자'),
-  createData('유다', '중학교3학년', '010-1234-5678', '2006-06-01', '남자'),
-  createData('요셉', '중학교3학년', '010-1234-5678', '2006-11-01', '남자'),
-  createData('모세', '중학교2학년', '010-1234-5678', '2007-01-01', '남자'),
-  createData('여호수아', '중학교1학년', '010-1234-5678', '2008-01-01', '남자'),
-];
+import SearchIcon from '@material-ui/icons/Search';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -181,16 +161,23 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton aria-label="delete">
+          <IconButton aria-label="delete" onClick={() => props.deleteFunction()}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       ) : (
+        <>
         <Tooltip title="Filter list">
           <IconButton aria-label="filter list">
             <FilterListIcon />
           </IconButton>
         </Tooltip>
+        <Tooltip title="Search">
+          <IconButton aria-label="search" onClick={() => props.searchFunction()}>
+            <SearchIcon />
+          </IconButton>
+        </Tooltip>
+        </>
       )}
     </Toolbar>
   );
@@ -259,6 +246,51 @@ const TableList = (props) => {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [ userlist, setUserlist] = useState([])
+
+  const onLookUpClick = () => {
+    db.collection('studentsInfo').get()
+    .then((querySnapshot) => {
+      let tempArray = []
+      querySnapshot.forEach((doc) => {
+        tempArray.push({
+         id: doc.id,
+         ...doc.data()
+        })
+     })
+     setUserlist(tempArray)
+    })
+  }
+
+  const onDeleteClick = async () => {
+    if (selected.length !== 1) {
+      for (let i = 0; i < selected.length; i++) {
+        await db.collection('studentsInfo').where("name", "==", selected[i]).get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            doc.ref.delete()
+          })
+          onLookUpClick()
+        }).catch(error => {
+          console.error("Error removing document: ", error);
+          alert('삭제에 실패하였습니다.')
+        })
+      }
+      alert('삭제에 성공하였습니다.')
+    } else {
+      await db.collection('studentsInfo').where("name", "==", selected[0]).get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            doc.ref.delete()
+          })
+          alert('삭제에 성공하였습니다.')
+        }).catch(error => {
+          console.error("Error removing document: ", error);
+          alert('삭제에 실패하였습니다.')
+        })
+    }
+    setSelected([])
+  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -268,7 +300,7 @@ const TableList = (props) => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = userlist.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -294,6 +326,7 @@ const TableList = (props) => {
 
     setSelected(newSelected);
   };
+  
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -310,7 +343,33 @@ const TableList = (props) => {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, userlist.length - page * rowsPerPage);
+
+  const convertGrade = (value) => {
+    switch(value) {
+      case 'G1': 
+        return '중1'
+        break;
+      case 'G2': 
+        return '중2'
+        break;
+      case 'G3': 
+        return '중3'
+        break;
+      case 'G4': 
+        return '고1'
+        break;
+      case 'G5': 
+        return '고2'
+        break;
+      case 'G6': 
+        return '고3'
+        break;
+      default:
+        break;
+    }
+  }
+
 
   return (
     <GridContainer>
@@ -324,7 +383,7 @@ const TableList = (props) => {
           </CardHeader>
           <CardBody>
             <div className={classes.root}>
-              <EnhancedTableToolbar numSelected={selected.length} />
+              <EnhancedTableToolbar numSelected={selected.length} searchFunction={onLookUpClick} deleteFunction={onDeleteClick}/>
               <TableContainer>
                 <Table
                   className={classes.table}
@@ -339,15 +398,14 @@ const TableList = (props) => {
                     orderBy={orderBy}
                     onSelectAllClick={handleSelectAllClick}
                     onRequestSort={handleRequestSort}
-                    rowCount={rows.length}
+                    rowCount={userlist.length}
                   />
                   <TableBody>
-                    {stableSort(rows, getComparator(order, orderBy))
+                    {stableSort(userlist, getComparator(order, orderBy))
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       .map((row, index) => {
                         const isItemSelected = isSelected(row.name);
                         const labelId = `enhanced-table-checkbox-${index}`;
-
                         return (
                           <TableRow
                             hover
@@ -367,7 +425,7 @@ const TableList = (props) => {
                             <TableCell component="th" id={labelId} scope="row" padding="none" align="left">
                               {row.name}
                             </TableCell>
-                            <TableCell align="left">{row.grade}</TableCell>
+                            <TableCell align="left">{convertGrade(row.grade)}</TableCell>
                             <TableCell align="left">{row.phoneNumber}</TableCell>
                             <TableCell align="left">{row.birthday}</TableCell>
                             <TableCell align="left">{row.sex}</TableCell>
@@ -385,7 +443,7 @@ const TableList = (props) => {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={rows.length}
+                count={userlist.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onChangePage={handleChangePage}

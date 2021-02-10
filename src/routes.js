@@ -5,25 +5,23 @@ import Notifications from "@material-ui/icons/Notifications";
 import ContactsIcon from '@material-ui/icons/Contacts';
 
 // core components/views for Admin layout
-// import DashboardPage from "./views/Dashboard/Dashboard.js";
-import RegisterPage from "./views/RegisterUser/RegisterUser.js";
-import AddressPage from "./views/TableList/TableList.js";
-
-
+import DashboardPage from "./views/Dashboard/Dashboard";
+import UpdateUserPage from "./views/UpdateUser/UpdateUser";
+import AddressPage from "./views/TableList/TableList";
 
 const dashboardRoutes = [
-  // {
-  //   path: "/dashboard",
-  //   name: "Dashboard",
-  //   icon: Dashboard,
-  //   component: DashboardPage,
-  //   layout: "/admin"
-  // },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: Dashboard,
+    component: DashboardPage,
+    layout: "/admin"
+  },
   {
     path: "/user",
-    name: "학생등록",
+    name: "학생정보수정",
     icon: Person,
-    component: RegisterPage,
+    component: UpdateUserPage,
     layout: "/admin"
   },
   {

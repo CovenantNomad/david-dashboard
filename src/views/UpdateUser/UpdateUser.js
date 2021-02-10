@@ -1,13 +1,10 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { db } from '../../config/firebaseConfig'
+
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from '@material-ui/core/MenuItem';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 // core components
 import GridItem from "../../components/Grid/GridItem";
 import GridContainer from "../../components/Grid/GridContainer";
@@ -18,9 +15,8 @@ import CardHeader from "../../components/Card/CardHeader.js";
 import CardBody from "../../components/Card/CardBody.js";
 import CardFooter from "../../components/Card/CardFooter.js";
 import CustomSelect from '../../components/CustomSelect/CustomSelect'
-// @material-ui/icons
-import SettingsIcon from '@material-ui/icons/Settings';
-import { primaryColor } from '../../assets/jss/globalStyle';
+
+
 
 const styles = {
   cardCategoryWhite: {
@@ -38,10 +34,7 @@ const styles = {
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
     marginBottom: "3px",
     textDecoration: "none"
-  },
-  title: {
-    flexGrow: 1,
-  },
+  }
 };
 
 const useStyles = makeStyles(styles);
@@ -56,6 +49,7 @@ const RegisterUser = () => {
     phoneNumber: "",
     birthday: "",
     address: "",
+    introduce: "",
   });
   
   const onInputChange = (e) => {
@@ -75,47 +69,12 @@ const RegisterUser = () => {
   };
 
   const onSubmit = () => {
-    const newStudentRef = db.collection("studentsInfo").doc()
-    newStudentRef.set({
-      name: inputs.name,
-      evangelizer: inputs.evangelizer,
-      phoneNumber: inputs.phoneNumber,
-      birthday: inputs.birthday,
-      address: inputs.address,
-      sex: sex,
-      grade: grade
-    })
-    .then(()=>{
-      alert('등록이 완료되었습니다.')
-      setInputs({
-        name: "",
-        evangelizer: "",
-        phoneNumber: "",
-        birthday: "",
-        address: "",
-      })
-      setSex("")
-      setGrade("")
-    })
+    alert('아직 업데이트 기능은 완성되지 않았습니다.')
   }
+  
 
   return (
     <div>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={8}>
-          <AppBar position="static" style={{ marginBottom: 20, backgroundColor:primaryColor[0]}}>
-            <Toolbar>
-              <Typography variant="h6" className={classes.title}>
-                화양교회 다윗 중고등부
-              </Typography>
-              <IconButton edge="start" color="inherit" aria-label="login" component={RouterLink} to="/signin">
-                <SettingsIcon />
-              </IconButton>
-            </Toolbar>
-        </AppBar>
-        </GridItem>
-      </GridContainer>
-      
       <GridContainer >
         <GridItem xs={12} sm={12} md={8}>
           <Card>
@@ -166,7 +125,7 @@ const RegisterUser = () => {
                       placeholder: '010-1234-5678',
                       onChange: onInputChange,
                       name: "phoneNumber",
-                      value: inputs.phoneNumber
+                      value: inputs.phonenumber
                     }}
                   />
                 </GridItem>
@@ -231,18 +190,37 @@ const RegisterUser = () => {
                       onChange: handleGradeChange
                     }}
                   >
-                    <MenuItem value={'G1'}>중학교 1학년</MenuItem>
-                    <MenuItem value={'G2'}>중학교 2학년</MenuItem>
-                    <MenuItem value={'G3'}>중학교 3학년</MenuItem>
-                    <MenuItem value={'G4'}>고등학교 1학년</MenuItem>
-                    <MenuItem value={'G5'}>고등학교 2학년</MenuItem>
-                    <MenuItem value={'G6'}>고등학교 3학년</MenuItem>
+                    <MenuItem value={'M1'}>중학교 1학년</MenuItem>
+                    <MenuItem value={'M2'}>중학교 2학년</MenuItem>
+                    <MenuItem value={'M3'}>중학교 3학년</MenuItem>
+                    <MenuItem value={'H1'}>고등학교 1학년</MenuItem>
+                    <MenuItem value={'H2'}>고등학교 2학년</MenuItem>
+                    <MenuItem value={'H3'}>고등학교 3학년</MenuItem>
                   </CustomSelect>
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                  <InputLabel style={{ color: "#AAAAAA", marginTop:20}}>간단한 소개</InputLabel>
+                  <CustomInput
+                    labelText="특이사항이나 알아야 할 내용을 적어주세요"
+                    id="aboutMe"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    inputProps={{
+                      multiline: true,
+                      rows: 5,
+                      onChange: onInputChange,
+                      name: "introduce",
+                      value: inputs.introduce
+                    }}
+                  />
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button onClick={()=>onSubmit()} color="primary">등록하기</Button>
+              <Button onClick={()=>onSubmit()} color="primary">업데이트 하기</Button>
             </CardFooter>
           </Card>
         </GridItem>
