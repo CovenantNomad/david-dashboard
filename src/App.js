@@ -1,24 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from 'react';
+import { createBrowserHistory } from "history";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
+
+import LadingPage from './views/LadingPage';
 
 function App() {
+  const hist = createBrowserHistory();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={(<div>Loading...</div>)}>
+      <Router history={hist}>
+        <Switch>
+          <Route path="/" component={LadingPage} />
+        </Switch>
+      </Router>
+    </Suspense>
   );
 }
 
