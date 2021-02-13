@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { db } from '../../config/firebaseConfig'
+import {Firebase} from '../../config/firebaseConfig';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import MenuItem from '@material-ui/core/MenuItem';
@@ -83,7 +84,8 @@ const RegisterUser = () => {
       birthday: inputs.birthday,
       address: inputs.address,
       sex: sex,
-      grade: grade
+      grade: grade,
+      createdAt: Firebase.firestore.Timestamp.fromDate(new Date()),
     })
     .then(()=>{
       alert('등록이 완료되었습니다.')
