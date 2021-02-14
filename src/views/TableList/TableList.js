@@ -31,6 +31,8 @@ import CardBody from "../../components/Card/CardBody.js";
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import SearchIcon from '@material-ui/icons/Search';
+// util
+import {convertGrade, convertSex} from "../../util/common-code";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -345,32 +347,6 @@ const TableList = (props) => {
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, userlist.length - page * rowsPerPage);
 
-  const convertGrade = (value) => {
-    switch(value) {
-      case 'G1': 
-        return '중1'
-        break;
-      case 'G2': 
-        return '중2'
-        break;
-      case 'G3': 
-        return '중3'
-        break;
-      case 'G4': 
-        return '고1'
-        break;
-      case 'G5': 
-        return '고2'
-        break;
-      case 'G6': 
-        return '고3'
-        break;
-      default:
-        break;
-    }
-  }
-
-
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -428,7 +404,7 @@ const TableList = (props) => {
                             <TableCell align="left">{convertGrade(row.grade)}</TableCell>
                             <TableCell align="left">{row.phoneNumber}</TableCell>
                             <TableCell align="left">{row.birthday}</TableCell>
-                            <TableCell align="left">{row.sex}</TableCell>
+                            <TableCell align="left">{convertSex(row.sex)}</TableCell>
                           </TableRow>
                         );
                       })}
