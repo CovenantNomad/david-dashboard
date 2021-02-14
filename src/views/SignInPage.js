@@ -45,7 +45,7 @@ export default function SignIn() {
     try {
       await auth.signInWithEmailAndPassword(data.email, data.password)
       history.push({
-        pathname: "/admin", 
+        pathname: "/admin/dashboard",
       })
     } catch (error) {
       console.log("Error @SignIn: ", error)
